@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Shruti/url-shortner/api/database"
-	"github.com/Shruti/url-shortner/api/models"
-	"github.com/Shruti/url-shortner/api/utils"
+	"github.com/Shruti/url-shortner/backend/api/models"
+	"github.com/Shruti/url-shortner/backend/api/utils"
+	"github.com/Shruti/url-shortner/backend/database"
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
@@ -18,7 +18,7 @@ import (
 func ShortenULR(c *gin.Context) {
 	var body models.Request
 	if err := c.ShouldBind(&body); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Cannit parse JSON"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Cannot parse JSON"})
 		return
 	}
 	r2 := database.CreateClient(1)
@@ -74,7 +74,7 @@ func ShortenULR(c *gin.Context) {
 		body.Expiry = 24
 	}
 
-	r.Set(database.Ctx, id, body.URL, body.Expiry*3600*time.Second).Err()
+	err = r.Set(database.Ctx, id, body.URL, body.Expiry*3600*time.Second).Err()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to connect to reddis"})

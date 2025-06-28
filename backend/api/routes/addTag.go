@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Shruti/url-shortner/api/database"
+	"github.com/Shruti/url-shortner/backend/database"
 	"github.com/gin-gonic/gin"
 )
 
